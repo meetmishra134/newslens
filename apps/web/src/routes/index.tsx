@@ -1,4 +1,7 @@
+import Features from '#/components/ui/landing/Features'
+import Footer from '#/components/ui/landing/Footer'
 import Hero from '#/components/ui/landing/Hero'
+import HowItWorks from '#/components/ui/landing/HowItWorks'
 import Navbar from '#/components/ui/landing/Navbar'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -10,7 +13,10 @@ function LandingPage() {
       <Navbar />
       <main>
         <Hero />
+        <Features />
+        <HowItWorks />
       </main>
+      <Footer />
     </div>
   )
 }

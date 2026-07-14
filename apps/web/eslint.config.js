@@ -1,9 +1,19 @@
-//  @ts-check
-
+// @ts-check
 import { tanstackConfig } from '@tanstack/eslint-config'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default [
   ...tanstackConfig,
+  {
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: __dirname,
+      },
+    },
+  },
   {
     rules: {
       'import/no-cycle': 'off',

@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { motion } from 'motion/react'
 import {
   Card,
@@ -11,8 +10,9 @@ import {
 } from '#/components/ui/card'
 import { Input } from '#/components/ui/input'
 import { Label } from '#/components/ui/label'
+import { Button } from '../ui/button'
 
-const MotionCard = motion(Card)
+const MotionCard = motion.create(Card)
 
 const LoginForm = () => {
   return (
