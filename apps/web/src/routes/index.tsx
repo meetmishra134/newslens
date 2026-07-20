@@ -1,3 +1,4 @@
+import Explore from '#/components/ui/landing/Explore'
 import Features from '#/components/ui/landing/Features'
 import Footer from '#/components/ui/landing/Footer'
 import Hero from '#/components/ui/landing/Hero'
@@ -15,6 +16,7 @@ function LandingPage() {
         <Hero />
         <Features />
         <HowItWorks />
+        <Explore />
       </main>
       <Footer />
     </div>

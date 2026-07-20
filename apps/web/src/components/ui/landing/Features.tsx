@@ -6,6 +6,34 @@ import {
   Bookmark,
   Smile,
 } from 'lucide-react'
+import type { Variants } from 'motion/react'
+import { motion } from 'motion/react'
+
+const container = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+} satisfies Variants
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+    scale: 0.96,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.4,
+      ease: 'easeOut',
+    },
+  },
+} satisfies Variants
 
 const features = [
   {
@@ -58,11 +86,18 @@ const Features = () => {
         </p>
       </div>
 
-      <div className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+      >
         {features.map((feature) => (
-          <div
+          <motion.div
+            variants={item}
             key={feature.title}
-            className="group rounded-3xl border border-zinc-200 bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg"
+            className="group rounded-3xl border border-zinc-100 bg-white p-8 transition-all duration-300 hover:-translate-y-2 hover:border-red-200 hover:shadow-xl shadow-sm"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 transition-colors duration-300 group-hover:bg-red-100">
               {feature.icon}
@@ -73,9 +108,9 @@ const Features = () => {
             </h3>
 
             <p className="mt-3 leading-7 text-zinc-600">{feature.desc}</p>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   )
 }

@@ -11,7 +11,7 @@ import {
 const NAV_LINKS = [
   { label: 'Features', id: 'features' },
   { label: 'How it works', id: 'how-it-works' },
-  { label: 'Trending', id: 'trending' },
+  { label: 'Explore', id: 'explore' },
 ]
 
 const Navbar = () => {
