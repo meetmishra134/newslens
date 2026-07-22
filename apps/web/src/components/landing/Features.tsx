@@ -37,32 +37,32 @@ const item = {
 
 const features = [
   {
-    icon: <LayoutGrid className="h-6 w-6 text-primary" />,
+    icon: <LayoutGrid className="text-primary h-6 w-6" />,
     title: 'Compare perspectives',
     desc: 'Read the same story from multiple trusted publishers side by side.',
   },
   {
-    icon: <Sparkles className="h-6 w-6 text-primary" />,
+    icon: <Sparkles className="text-primary h-6 w-6" />,
     title: 'AI summaries',
     desc: 'Understand every article instantly with concise AI-powered summaries.',
   },
   {
-    icon: <Smile className="h-6 w-6 text-primary" />,
+    icon: <Smile className="text-primary h-6 w-6" />,
     title: 'Sentiment analysis',
     desc: 'Understand the tone and emotion behind every headline.',
   },
   {
-    icon: <TrendingUp className="h-6 w-6 text-primary" />,
+    icon: <TrendingUp className="text-primary h-6 w-6" />,
     title: 'Trending stories',
     desc: 'Discover what people are reading across trusted news sources.',
   },
   {
-    icon: <UserCircle className="h-6 w-6 text-primary" />,
+    icon: <UserCircle className="text-primary h-6 w-6" />,
     title: 'Personalized feed',
     desc: 'News tailored to your interests, language and location.',
   },
   {
-    icon: <Bookmark className="h-6 w-6 text-primary" />,
+    icon: <Bookmark className="text-primary h-6 w-6" />,
     title: 'Bookmarks',
     desc: 'Save important stories and continue reading anytime.',
   },
@@ -72,12 +72,12 @@ const Features = () => {
   return (
     <section id="features" className="mx-auto max-w-7xl px-4 py-24 md:py-32">
       <div className="mx-auto max-w-3xl text-center">
-        <div className="inline-flex rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-primary">
+        <div className="text-primary inline-flex rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium">
           Why NewsLens?
         </div>
         <h2 className="mt-6 text-3xl font-bold tracking-tight text-zinc-900 md:text-5xl">
           <span className="block">Everything you need.</span>
-          <span className="mt-3 block text-primary">Nothing you don't.</span>
+          <span className="text-primary mt-3 block">Nothing you don't.</span>
         </h2>
 
         <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-zinc-600 md:text-lg">
@@ -97,7 +97,7 @@ const Features = () => {
           <motion.div
             variants={item}
             key={feature.title}
-            className="group rounded-3xl border border-zinc-100 bg-white p-8 transition-all duration-300 hover:-translate-y-2 hover:border-red-200 hover:shadow-xl shadow-sm"
+            className="group rounded-3xl border border-zinc-100 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-red-200 hover:shadow-xl"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 transition-colors duration-300 group-hover:bg-red-100">
               {feature.icon}

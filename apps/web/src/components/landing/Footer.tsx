@@ -12,13 +12,13 @@ const Footer = () => {
         </p>
 
         <nav className="mt-10 flex flex-wrap items-center justify-center gap-8">
-          <a href="#features" className="text-zinc-600 hover:text-primary">
+          <a href="#features" className="hover:text-primary text-zinc-600">
             Features
           </a>
-          <a href="#how-it-works" className="text-zinc-600 hover:text-primary">
+          <a href="#how-it-works" className="hover:text-primary text-zinc-600">
             How it Works
           </a>
-          <a href="#explore" className="text-zinc-600 hover:text-primary">
+          <a href="#explore" className="hover:text-primary text-zinc-600">
             Explore
           </a>
         </nav>

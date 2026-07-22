@@ -23,7 +23,7 @@ const Explore = () => {
         transition={{ duration: 0.45 }}
         className="mx-auto max-w-3xl text-center"
       >
-        <div className="inline-flex rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-primary">
+        <div className="text-primary inline-flex rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium">
           Reading Streak
         </div>
 
@@ -92,7 +92,7 @@ const Explore = () => {
               }}
               className="mt-12 flex items-end gap-4"
             >
-              <span className="text-7xl font-bold text-primary">5</span>
+              <span className="text-primary text-7xl font-bold">5</span>
 
               <Flame className="mb-3 h-14 w-14 fill-orange-500 text-orange-500" />
 
@@ -111,13 +111,13 @@ const Explore = () => {
           {/* Right */}
           <div className="space-y-4">
             <StatCard
-              icon={<BookOpen className="h-5 w-5 text-primary" />}
+              icon={<BookOpen className="text-primary h-5 w-5" />}
               title="Articles read this week"
               value="23"
             />
 
             <StatCard
-              icon={<Clock3 className="h-5 w-5 text-primary" />}
+              icon={<Clock3 className="text-primary h-5 w-5" />}
               title="Reading time"
               value="4h 20m"
             />

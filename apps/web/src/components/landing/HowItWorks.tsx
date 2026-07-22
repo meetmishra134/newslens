@@ -26,7 +26,7 @@ const HowItWorks = () => {
     >
       {/* Heading */}
       <div className="mx-auto max-w-3xl text-center">
-        <span className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-primary">
+        <span className="text-primary rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium">
           How it works
         </span>
 
@@ -54,7 +54,7 @@ const HowItWorks = () => {
                   duration: 0.6,
                   delay: index * 0.2,
                 }}
-                className="absolute left-full top-30 h-0.5 w-8 bg-linear-to-r from-red-200 via-red-300 to-red-200"
+                className="absolute top-30 left-full h-0.5 w-8 bg-linear-to-r from-red-200 via-red-300 to-red-200"
               />
             )}
 
@@ -74,7 +74,7 @@ const HowItWorks = () => {
               }}
               className="rounded-3xl border border-zinc-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-lg"
             >
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-lg font-semibold text-white">
+              <div className="bg-primary mx-auto flex h-14 w-14 items-center justify-center rounded-full text-lg font-semibold text-white">
                 {step.id}
               </div>
 
@@ -102,7 +102,7 @@ const HowItWorks = () => {
                   duration: 0.6,
                   delay: index * 0.2,
                 }}
-                className="absolute left-1/2 top-full h-8 w-px -translate-x-1/2 bg-linear-to-b from-red-200 via-red-300 to-red-200"
+                className="absolute top-full left-1/2 h-8 w-px -translate-x-1/2 bg-linear-to-b from-red-200 via-red-300 to-red-200"
               />
             )}
 
@@ -122,7 +122,7 @@ const HowItWorks = () => {
               }}
               className="rounded-3xl border border-zinc-200 bg-white p-6 text-center"
             >
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-base font-semibold text-white">
+              <div className="bg-primary mx-auto flex h-12 w-12 items-center justify-center rounded-full text-base font-semibold text-white">
                 {step.id}
               </div>
 

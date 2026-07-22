@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import healthCheckRouter from "./routes/healthCheck.route";
+import userRouter from "./routes/user.routes";
 import { clerkMiddleware } from "@clerk/express";
 import cookieParser from "cookie-parser";
 import path from "path";
@@ -15,7 +16,7 @@ app.use(express.urlencoded({ extended: true, limit: "20kb" }));
 app.use("/public", express.static(path.join(__dirname, "../public")));
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:3000",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: [
@@ -29,5 +30,6 @@ app.use(
   }),
 );
 app.use("/api/v1/healthCheck", healthCheckRouter);
+app.use("/api/v1/user", userRouter);
 
 export default app;
