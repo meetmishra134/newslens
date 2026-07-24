@@ -20,9 +20,7 @@ function RouteComponent() {
         }}
         className="relative z-10 w-full max-w-md"
       >
-        <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
-          <LoginForm />
-        </div>
+        <LoginForm />
       </motion.div>
     </div>
   )

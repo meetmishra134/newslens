@@ -6,11 +6,11 @@ const Hero = () => {
     <section
       style={{
         backgroundImage: "url('/images/background.png')",
-        backgroundSize: '1300px auto',
+        backgroundSize: 'auto',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center top',
       }}
-      className="relative flex min-h-screen items-center bg-white px-4 pt-40 pb-24"
+      className="background-url('/images/background.png') relative flex min-h-screen items-center bg-white px-4 pt-40 pb-24"
       id="hero"
     >
       <div className="container mx-auto flex max-w-7xl flex-col items-center justify-center text-center">

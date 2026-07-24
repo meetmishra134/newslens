@@ -13,6 +13,7 @@ const MotionCard = motion.create(Card)
 const LoginForm = () => {
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
+  const [isError, setIsError] = useState('')
   const [verifying, setVerifying] = useState(false)
   const [flow, setFlow] = useState<'signIn' | 'signUp'>('signIn')
   const { signIn, fetchStatus: signInFetchStatus } = useSignIn()
@@ -40,7 +41,10 @@ const LoginForm = () => {
 
   const handleEmailSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault()
-
+    if (email.length === 0) {
+      setIsError('Email address is required.')
+      return
+    }
     if (flow === 'signIn') {
       const { error: createError } = await signIn.create({ identifier: email })
 
@@ -86,7 +90,9 @@ const LoginForm = () => {
 
   const handleCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
+    if (!code) {
+      setIsError('Please enter the verification code.')
+    }
     if (flow === 'signIn') {
       const { error } = await signIn.emailCode.verifyCode({ code })
 
@@ -202,10 +208,19 @@ const LoginForm = () => {
                   type="email"
                   placeholder="you@example.com"
                   className="focus-visible:ring-primary shadow-input h-11 rounded-xl border-zinc-200"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    setIsError('')
+                  }}
+                  onInvalid={(e) => {
+                    e.preventDefault()
+                    setIsError('Please enter a valid email address.')
+                  }}
                   value={email}
-                  required
                 />
+                {isError && (
+                  <p className="text-primary mt-1 text-sm">{isError}</p>
+                )}
               </div>
 
               <Button
