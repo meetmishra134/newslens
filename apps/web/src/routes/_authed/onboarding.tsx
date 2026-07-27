@@ -1,8 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import CategoryCard from '#/components/newslens/CategoryCard'
 import { ArrowRight, Sparkles } from 'lucide-react'
-import { Button } from '#/components/ui/button'
 
 const Categories = [
   {
@@ -42,7 +41,7 @@ const Categories = [
     description: 'Movies, gaming, arts & pop culture',
   },
 ]
-export const Route = createFileRoute('/onboarding')({
+export const Route = createFileRoute('/_authed/onboarding')({
   component: RouteComponent,
 })
 
@@ -93,14 +92,15 @@ function RouteComponent() {
           >
             Skip for now
           </button>
-          <Button
+          <Link
+            to="/dashboard"
             disabled={selectedCategories.length < 3}
-            className={`${selectedCategories.length >= 3 ? 'bg-primary' : 'bg-muted'} inline-flex items-center rounded-full px-6 py-5 font-medium text-white hover:bg-[#c93f3e]`}
+            className={`${selectedCategories.length >= 3 ? 'bg-primary' : 'bg-muted'} inline-flex items-center rounded-full px-3 py-2 text-sm font-semibold text-white hover:bg-[#c93f3e] md:px-4 md:py-2`}
           >
             Continue
             {selectedCategories.length > 0 && ` (${selectedCategories.length})`}
             <ArrowRight className="h-4 w-4" />
-          </Button>
+          </Link>
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import { Input } from '#/components/ui/input'
 import { Label } from '#/components/ui/label'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
+import { Spinner } from '../ui/spinner'
 
 const MotionCard = motion.create(Card)
 
@@ -122,10 +123,13 @@ const LoginForm = () => {
 
   return (
     <MotionCard
-      className="w-full max-w-md rounded-3xl border border-zinc-200/80 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
-      initial={{ opacity: 0, y: 30 }}
+      className="shadow-input w-full max-w-sm rounded-3xl border border-zinc-200/80 bg-white"
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: 'easeOut' }}
+      transition={{
+        duration: 0.4,
+        ease: [0.16, 1, 0.3, 1], // Custom snappy ease-out curve
+      }}
     >
       <CardHeader className="space-y-3 px-8 pt-8 text-center">
         <div className="flex flex-col items-center">
@@ -184,7 +188,9 @@ const LoginForm = () => {
                   fill="#EA4335"
                 />
               </svg>
-              Continue with Google
+              {flow === 'signIn'
+                ? 'Sign in with Google'
+                : 'Sign up with Google'}
             </Button>
 
             <div className="relative">
@@ -228,7 +234,14 @@ const LoginForm = () => {
                 disabled={isLoading}
                 className="bg-primary h-11 w-full rounded-xl font-medium text-white transition-all hover:brightness-95"
               >
-                {isLoading ? 'Sending code...' : 'Continue'}
+                {isLoading ? (
+                  <>
+                    <Spinner data-icon="inline-start" />
+                    {''} Verifying
+                  </>
+                ) : (
+                  'Continue'
+                )}
               </Button>
             </form>
 

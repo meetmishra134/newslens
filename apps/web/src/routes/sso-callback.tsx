@@ -1,3 +1,4 @@
+import Loader from '#/components/ui/loader'
 import { AuthenticateWithRedirectCallback } from '@clerk/react'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -6,5 +7,10 @@ export const Route = createFileRoute('/sso-callback')({
 })
 
 function RouteComponent() {
-  return <AuthenticateWithRedirectCallback />
+  return (
+    <>
+      <Loader />
+      <AuthenticateWithRedirectCallback />
+    </>
+  )
 }

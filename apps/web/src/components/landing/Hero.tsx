@@ -1,7 +1,11 @@
 import { Sparkles } from 'lucide-react'
 import { Button } from '../ui/button'
+import { useAuth } from '@clerk/react'
+import { useNavigate } from '@tanstack/react-router'
 
 const Hero = () => {
+  const { isSignedIn } = useAuth()
+  const navigate = useNavigate()
   return (
     <section
       style={{
@@ -39,9 +43,14 @@ const Hero = () => {
             Get Started
           </Button>
 
-          <Button className="rounded-full border border-neutral-300 bg-gray-100 px-7 py-5 font-medium text-gray-800 shadow-sm hover:bg-gray-200">
-            Dashboard
-          </Button>
+          {isSignedIn && (
+            <Button
+              onClick={() => navigate({ to: '/dashboard' })}
+              className="rounded-full border border-neutral-300 bg-gray-100 px-7 py-5 font-medium text-gray-800 shadow-sm hover:bg-gray-200"
+            >
+              Dashboard
+            </Button>
+          )}
         </div>
       </div>
     </section>
