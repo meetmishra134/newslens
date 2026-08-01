@@ -93,7 +93,7 @@ function RouteComponent() {
             Skip for now
           </button>
           <Link
-            to="/dashboard"
+            to="/feed"
             disabled={selectedCategories.length < 3}
             className={`${selectedCategories.length >= 3 ? 'bg-primary' : 'bg-muted'} inline-flex items-center rounded-full px-3 py-2 text-sm font-semibold text-white hover:bg-[#c93f3e] md:px-4 md:py-2`}
           >

@@ -81,16 +81,12 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA */}
-
           <Link
-            to="/login"
+            to="/signup"
             className="hidden rounded-full bg-linear-to-r from-red-500 to-red-600 px-6 py-2.5 text-sm font-medium text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:scale-[1.03] hover:shadow-red-500/30 md:block"
           >
             Get Started
           </Link>
-
-          {/* Mobile */}
 
           <button
             onClick={() => setIsOpen((p) => !p)}
@@ -122,7 +118,7 @@ const Navbar = () => {
 
                 <div className="p-5">
                   <Link
-                    to="/login"
+                    to="/signup"
                     className="flex w-full justify-center rounded-full bg-linear-to-r from-red-500 to-red-600 py-3 font-medium text-white"
                   >
                     Get Started

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSignIn } from '@clerk/react'
+import { useSignUp } from '@clerk/react'
 import { motion } from 'motion/react'
 import { Card, CardContent, CardHeader } from '#/components/ui/card'
 import { Button } from '#/components/ui/button'
@@ -11,21 +11,21 @@ import { Spinner } from '#/components/ui/spinner'
 
 const MotionCard = motion.create(Card)
 
-export const SignInForm = () => {
+export const SignUpForm = () => {
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
   const [isError, setIsError] = useState('')
   const [verifying, setVerifying] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
 
-  const { signIn, fetchStatus } = useSignIn()
+  const { signUp, fetchStatus } = useSignUp()
   const navigate = useNavigate()
   const isLoading = fetchStatus === 'fetching'
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignUp = async () => {
     setIsGoogleLoading(true)
     try {
-      const { error } = await signIn.sso({
+      const { error } = await signUp.sso({
         strategy: 'oauth_google',
         redirectUrl: '/onboarding',
         redirectCallbackUrl: '/sso-callback',
@@ -35,7 +35,7 @@ export const SignInForm = () => {
         toast.error(error.message)
       }
     } catch {
-      toast.error('Google Sign-In failed.')
+      toast.error('Google Sign-Up failed.')
     } finally {
       setIsGoogleLoading(false)
     }
@@ -48,18 +48,16 @@ export const SignInForm = () => {
       return
     }
 
-    const { error: createError } = await signIn.create({ identifier: email })
+    const { error: createError } = await signUp.create({
+      emailAddress: email,
+    })
 
     if (createError) {
-      if (createError.code === 'form_identifier_not_found') {
-        toast.error('Account not found. Please sign up first.')
-        return
-      }
       toast.error(createError.message)
       return
     }
 
-    const { error: sendCodeError } = await signIn.emailCode.sendCode()
+    const { error: sendCodeError } = await signUp.verifications.sendEmailCode()
 
     if (sendCodeError) {
       toast.error(sendCodeError.message)
@@ -68,6 +66,7 @@ export const SignInForm = () => {
     }
   }
 
+  // Verification Code Handler
   const handleCodeSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!code) {
@@ -75,15 +74,15 @@ export const SignInForm = () => {
       return
     }
 
-    const { error } = await signIn.emailCode.verifyCode({ code })
+    const { error } = await signUp.verifications.verifyEmailCode({ code })
 
     if (error) {
       toast.error(error.message)
       return
     }
 
-    if (signIn.status === 'complete') {
-      await signIn.finalize()
+    if (signUp.status === 'complete') {
+      await signUp.finalize()
       navigate({ to: '/onboarding' })
     }
   }
@@ -112,12 +111,12 @@ export const SignInForm = () => {
 
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-            {verifying ? 'Verify Code' : 'Welcome back'}
+            {verifying ? 'Verify Code' : 'Create Account'}
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-zinc-500">
             {verifying
               ? `We sent a code to ${email}`
-              : 'Sign in to continue to your personalized news feed.'}
+              : 'Sign up to get started with your personalized news feed.'}
           </p>
         </div>
       </CardHeader>
@@ -127,7 +126,7 @@ export const SignInForm = () => {
           <>
             <Button
               variant="outline"
-              onClick={handleGoogleSignIn}
+              onClick={handleGoogleSignUp}
               type="button"
               className="h-11 w-full cursor-pointer rounded-xl border-zinc-200 font-medium text-zinc-700 transition-all hover:border-zinc-300 hover:bg-zinc-50"
             >
@@ -154,7 +153,7 @@ export const SignInForm = () => {
                   <Spinner data-icon="inline-start" />
                 </>
               ) : (
-                'Sign in with Google'
+                'Sign up with Google'
               )}
             </Button>
 
@@ -211,12 +210,12 @@ export const SignInForm = () => {
             </form>
 
             <div className="text-center text-sm text-zinc-500">
-              Don't have an account?{' '}
+              Already have an account?{' '}
               <Link
-                to="/signup"
+                to="/login"
                 className="text-primary cursor-pointer font-semibold underline"
               >
-                Sign up
+                Sign in
               </Link>
             </div>
           </>
@@ -259,4 +258,4 @@ export const SignInForm = () => {
   )
 }
 
-export default SignInForm
+export default SignUpForm

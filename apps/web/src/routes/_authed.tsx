@@ -1,3 +1,4 @@
+import Navbar from '#/components/newslens/Navbar'
 import Loader from '#/components/ui/loader'
 import { useAuth } from '@clerk/react'
 import { createFileRoute, Outlet, Navigate } from '@tanstack/react-router'
@@ -22,5 +23,11 @@ function AuthLayout() {
       />
     )
   }
-  return <Outlet />
+
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  )
 }

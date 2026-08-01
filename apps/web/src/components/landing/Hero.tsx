@@ -39,13 +39,16 @@ const Hero = () => {
           side, and understand the full story with AI-powered insights.
         </p>
         <div className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button className="bg-primary rounded-full px-7 py-5 font-medium text-white hover:bg-[#c93f3e]">
+          <Button
+            onClick={() => navigate({ to: '/signup' })}
+            className="bg-primary rounded-full px-7 py-5 font-medium text-white hover:bg-[#c93f3e]"
+          >
             Get Started
           </Button>
 
           {isSignedIn && (
             <Button
-              onClick={() => navigate({ to: '/dashboard' })}
+              onClick={() => navigate({ to: '/feed' })}
               className="rounded-full border border-neutral-300 bg-gray-100 px-7 py-5 font-medium text-gray-800 shadow-sm hover:bg-gray-200"
             >
               Dashboard
