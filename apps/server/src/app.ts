@@ -2,10 +2,12 @@ import express from "express";
 import cors from "cors";
 import healthCheckRouter from "./routes/healthCheck.route";
 import userRouter from "./routes/user.routes";
+import authRouter from "./routes/auth.route";
 import { clerkMiddleware } from "@clerk/express";
 import cookieParser from "cookie-parser";
 import path from "path";
 import helmet from "helmet";
+import { errorHandler } from "./middleware/errorHandler.middleware";
 
 const app = express();
 app.use(express.json({ limit: "20kb" }));
@@ -29,7 +31,10 @@ app.use(
     ],
   }),
 );
+
 app.use("/api/v1/healthCheck", healthCheckRouter);
-app.use("/api/v1/user", userRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
+app.use(errorHandler);
 
 export default app;

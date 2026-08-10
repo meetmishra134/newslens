@@ -15,8 +15,11 @@ import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SsoCallbackRouteImport } from './routes/sso-callback'
-import { Route as AuthedFeedRouteImport } from './routes/_authed/feed'
 import { Route as AuthedOnboardingRouteImport } from './routes/_authed/onboarding'
+import { Route as AuthedDashboardBookmarksRouteImport } from './routes/_authed/dashboard/bookmarks'
+import { Route as AuthedDashboardExploreRouteImport } from './routes/_authed/dashboard/explore'
+import { Route as AuthedDashboardFeedRouteImport } from './routes/_authed/dashboard/feed'
+import { Route as AuthedDashboardTrendingRouteImport } from './routes/_authed/dashboard/trending'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -47,14 +50,30 @@ const SsoCallbackRoute = SsoCallbackRouteImport.update({
   path: '/sso-callback',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthedFeedRoute = AuthedFeedRouteImport.update({
-  id: '/feed',
-  path: '/feed',
-  getParentRoute: () => AuthedRoute,
-} as any)
 const AuthedOnboardingRoute = AuthedOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedDashboardBookmarksRoute =
+  AuthedDashboardBookmarksRouteImport.update({
+    id: '/dashboard/bookmarks',
+    path: '/dashboard/bookmarks',
+    getParentRoute: () => AuthedRoute,
+  } as any)
+const AuthedDashboardExploreRoute = AuthedDashboardExploreRouteImport.update({
+  id: '/dashboard/explore',
+  path: '/dashboard/explore',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedDashboardFeedRoute = AuthedDashboardFeedRouteImport.update({
+  id: '/dashboard/feed',
+  path: '/dashboard/feed',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedDashboardTrendingRoute = AuthedDashboardTrendingRouteImport.update({
+  id: '/dashboard/trending',
+  path: '/dashboard/trending',
   getParentRoute: () => AuthedRoute,
 } as any)
 
@@ -64,8 +83,11 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/sso-callback': typeof SsoCallbackRoute
-  '/feed': typeof AuthedFeedRoute
   '/onboarding': typeof AuthedOnboardingRoute
+  '/dashboard/bookmarks': typeof AuthedDashboardBookmarksRoute
+  '/dashboard/explore': typeof AuthedDashboardExploreRoute
+  '/dashboard/feed': typeof AuthedDashboardFeedRoute
+  '/dashboard/trending': typeof AuthedDashboardTrendingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -73,8 +95,11 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/sso-callback': typeof SsoCallbackRoute
-  '/feed': typeof AuthedFeedRoute
   '/onboarding': typeof AuthedOnboardingRoute
+  '/dashboard/bookmarks': typeof AuthedDashboardBookmarksRoute
+  '/dashboard/explore': typeof AuthedDashboardExploreRoute
+  '/dashboard/feed': typeof AuthedDashboardFeedRoute
+  '/dashboard/trending': typeof AuthedDashboardTrendingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -84,8 +109,11 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/sso-callback': typeof SsoCallbackRoute
-  '/_authed/feed': typeof AuthedFeedRoute
   '/_authed/onboarding': typeof AuthedOnboardingRoute
+  '/_authed/dashboard/bookmarks': typeof AuthedDashboardBookmarksRoute
+  '/_authed/dashboard/explore': typeof AuthedDashboardExploreRoute
+  '/_authed/dashboard/feed': typeof AuthedDashboardFeedRoute
+  '/_authed/dashboard/trending': typeof AuthedDashboardTrendingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -95,8 +123,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/sso-callback'
-    | '/feed'
     | '/onboarding'
+    | '/dashboard/bookmarks'
+    | '/dashboard/explore'
+    | '/dashboard/feed'
+    | '/dashboard/trending'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -104,8 +135,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/sso-callback'
-    | '/feed'
     | '/onboarding'
+    | '/dashboard/bookmarks'
+    | '/dashboard/explore'
+    | '/dashboard/feed'
+    | '/dashboard/trending'
   id:
     | '__root__'
     | '/'
@@ -114,8 +148,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/sso-callback'
-    | '/_authed/feed'
     | '/_authed/onboarding'
+    | '/_authed/dashboard/bookmarks'
+    | '/_authed/dashboard/explore'
+    | '/_authed/dashboard/feed'
+    | '/_authed/dashboard/trending'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,13 +208,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SsoCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authed/feed': {
-      id: '/_authed/feed'
-      path: '/feed'
-      fullPath: '/feed'
-      preLoaderRoute: typeof AuthedFeedRouteImport
-      parentRoute: typeof AuthedRoute
-    }
     '/_authed/onboarding': {
       id: '/_authed/onboarding'
       path: '/onboarding'
@@ -185,17 +215,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedOnboardingRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/dashboard/bookmarks': {
+      id: '/_authed/dashboard/bookmarks'
+      path: '/dashboard/bookmarks'
+      fullPath: '/dashboard/bookmarks'
+      preLoaderRoute: typeof AuthedDashboardBookmarksRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/dashboard/explore': {
+      id: '/_authed/dashboard/explore'
+      path: '/dashboard/explore'
+      fullPath: '/dashboard/explore'
+      preLoaderRoute: typeof AuthedDashboardExploreRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/dashboard/feed': {
+      id: '/_authed/dashboard/feed'
+      path: '/dashboard/feed'
+      fullPath: '/dashboard/feed'
+      preLoaderRoute: typeof AuthedDashboardFeedRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/dashboard/trending': {
+      id: '/_authed/dashboard/trending'
+      path: '/dashboard/trending'
+      fullPath: '/dashboard/trending'
+      preLoaderRoute: typeof AuthedDashboardTrendingRouteImport
+      parentRoute: typeof AuthedRoute
+    }
   }
 }
 
 interface AuthedRouteChildren {
-  AuthedFeedRoute: typeof AuthedFeedRoute
   AuthedOnboardingRoute: typeof AuthedOnboardingRoute
+  AuthedDashboardBookmarksRoute: typeof AuthedDashboardBookmarksRoute
+  AuthedDashboardExploreRoute: typeof AuthedDashboardExploreRoute
+  AuthedDashboardFeedRoute: typeof AuthedDashboardFeedRoute
+  AuthedDashboardTrendingRoute: typeof AuthedDashboardTrendingRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
-  AuthedFeedRoute: AuthedFeedRoute,
   AuthedOnboardingRoute: AuthedOnboardingRoute,
+  AuthedDashboardBookmarksRoute: AuthedDashboardBookmarksRoute,
+  AuthedDashboardExploreRoute: AuthedDashboardExploreRoute,
+  AuthedDashboardFeedRoute: AuthedDashboardFeedRoute,
+  AuthedDashboardTrendingRoute: AuthedDashboardTrendingRoute,
 }
 
 const AuthedRouteWithChildren =

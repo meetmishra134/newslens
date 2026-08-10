@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { syncUser } from "../controllers/user.controller";
+import { getUser } from "../controllers/user.controller";
 
 const router = Router();
-
-router.route("/sync").post(syncUser);
+router.route("/me").get(getUser);
 
 export default router;
