@@ -14,13 +14,14 @@ const MotionCard = motion.create(Card)
 export const SignUpForm = () => {
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
+  const [username, setUsername] = useState('')
   const [isError, setIsError] = useState('')
   const [verifying, setVerifying] = useState(false)
+  const [isEmailLoading, setIsEmailLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
 
-  const { signUp, fetchStatus } = useSignUp()
+  const { signUp } = useSignUp()
   const navigate = useNavigate()
-  const isLoading = fetchStatus === 'fetching'
 
   const handleGoogleSignUp = async () => {
     setIsGoogleLoading(true)
@@ -43,30 +44,45 @@ export const SignUpForm = () => {
 
   const handleEmailSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (email.length === 0) {
+    setIsError('')
+
+    if (!username.trim()) {
+      setIsError('Username is required.')
+      return
+    }
+
+    if (!email.trim()) {
       setIsError('Email address is required.')
       return
     }
 
-    const { error: createError } = await signUp.create({
-      emailAddress: email,
-    })
+    setIsEmailLoading(true)
+    try {
+      const { error: createError } = await signUp.create({
+        username: username,
+        emailAddress: email,
+      })
 
-    if (createError) {
-      toast.error(createError.message)
-      return
-    }
+      if (createError) {
+        toast.error(createError.message)
+        return
+      }
 
-    const { error: sendCodeError } = await signUp.verifications.sendEmailCode()
+      const { error: sendCodeError } =
+        await signUp.verifications.sendEmailCode()
 
-    if (sendCodeError) {
-      toast.error(sendCodeError.message)
-    } else {
-      setVerifying(true)
+      if (sendCodeError) {
+        toast.error(sendCodeError.message)
+      } else {
+        setVerifying(true)
+      }
+    } catch {
+      toast.error('Sign-up failed.')
+    } finally {
+      setIsEmailLoading(false)
     }
   }
 
-  // Verification Code Handler
   const handleCodeSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!code) {
@@ -74,16 +90,23 @@ export const SignUpForm = () => {
       return
     }
 
-    const { error } = await signUp.verifications.verifyEmailCode({ code })
+    setIsEmailLoading(true)
+    try {
+      const { error } = await signUp.verifications.verifyEmailCode({ code })
 
-    if (error) {
-      toast.error(error.message)
-      return
-    }
+      if (error) {
+        toast.error(error.message)
+        return
+      }
 
-    if (signUp.status === 'complete') {
-      await signUp.finalize()
-      navigate({ to: '/onboarding' })
+      if (signUp.status === 'complete') {
+        await signUp.finalize()
+        navigate({ to: '/onboarding' })
+      }
+    } catch {
+      toast.error('Verification failed.')
+    } finally {
+      setIsEmailLoading(false)
     }
   }
 
@@ -97,12 +120,12 @@ export const SignUpForm = () => {
         ease: [0.16, 1, 0.3, 1],
       }}
     >
-      <CardHeader className="space-y-3 px-8 pt-8 text-center">
+      <CardHeader className="space-y-2 px-7 pt-6 pb-0 text-center">
         <div className="flex flex-col items-center">
           <motion.img
             src="/images/newslens.svg"
             alt="NewsLens"
-            className="h-11 w-11 shadow-sm"
+            className="h-10 w-10 shadow-sm"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0, rotate: 360 }}
             transition={{ duration: 0.45, ease: 'easeOut' }}
@@ -110,10 +133,10 @@ export const SignUpForm = () => {
         </div>
 
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
             {verifying ? 'Verify Code' : 'Create Account'}
           </h1>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+          <p className="mt-1 text-xs leading-relaxed text-zinc-500">
             {verifying
               ? `We sent a code to ${email}`
               : 'Sign up to get started with your personalized news feed.'}
@@ -121,16 +144,17 @@ export const SignUpForm = () => {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-5 px-8 pt-6 pb-8">
+      <CardContent className="space-y-4 px-7 pt-4 pb-6">
         {!verifying ? (
           <>
             <Button
               variant="outline"
               onClick={handleGoogleSignUp}
               type="button"
-              className="h-11 w-full cursor-pointer rounded-xl border-zinc-200 font-medium text-zinc-700 transition-all hover:border-zinc-300 hover:bg-zinc-50"
+              disabled={isGoogleLoading || isEmailLoading}
+              className="h-10 w-full cursor-pointer rounded-xl border-zinc-200 text-xs font-medium text-zinc-700 transition-all hover:border-zinc-300 hover:bg-zinc-50"
             >
-              <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
+              <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                   fill="#4285F4"
@@ -149,56 +173,76 @@ export const SignUpForm = () => {
                 />
               </svg>
               {isGoogleLoading ? (
-                <>
-                  <Spinner data-icon="inline-start" />
-                </>
+                <Spinner data-icon="inline-start" />
               ) : (
                 'Sign up with Google'
               )}
             </Button>
 
-            <div className="relative">
+            <div className="relative my-1">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-zinc-300" />
+                <div className="w-full border-t border-zinc-200" />
               </div>
               <div className="relative flex justify-center">
-                <span className="bg-white px-4 text-xs tracking-wider text-zinc-400 uppercase">
+                <span className="bg-white px-3 text-[10px] tracking-wider text-zinc-400 uppercase">
                   or
                 </span>
               </div>
             </div>
 
-            <form onSubmit={handleEmailSubmit} className="space-y-5">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">
+            <form onSubmit={handleEmailSubmit} className="space-y-3">
+              {isError && (
+                <div className="rounded-lg bg-red-50 p-2 text-center text-xs font-medium text-red-600">
+                  {isError}
+                </div>
+              )}
+
+              <div className="space-y-1">
+                <Label
+                  htmlFor="username"
+                  className="text-xs font-medium text-zinc-700"
+                >
+                  Username
+                </Label>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="johndoe_123"
+                  className="focus-visible:ring-primary shadow-input h-10 rounded-xl border-zinc-200 text-sm"
+                  onChange={(e) => {
+                    setUsername(e.target.value)
+                    setIsError('')
+                  }}
+                  value={username}
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label
+                  htmlFor="email"
+                  className="text-xs font-medium text-zinc-700"
+                >
                   Email address
                 </Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="you@example.com"
-                  className="focus-visible:ring-primary shadow-input h-11 rounded-xl border-zinc-200"
+                  className="focus-visible:ring-primary shadow-input h-10 rounded-xl border-zinc-200 text-sm"
                   onChange={(e) => {
                     setEmail(e.target.value)
                     setIsError('')
                   }}
-                  onInvalid={(e) => {
-                    e.preventDefault()
-                    setIsError('Please enter a valid email address.')
-                  }}
                   value={email}
                 />
-                {isError && (
-                  <p className="text-primary mt-1 text-sm">{isError}</p>
-                )}
               </div>
 
               <Button
                 type="submit"
-                disabled={isLoading}
-                className="bg-primary h-11 w-full rounded-xl font-medium text-white transition-all hover:brightness-95"
+                disabled={isEmailLoading || isGoogleLoading}
+                className="bg-primary h-10 w-full rounded-xl text-xs font-medium text-white transition-all hover:brightness-95"
               >
-                {isLoading ? (
+                {isEmailLoading ? (
                   <>
                     <Spinner data-icon="inline-start" />
                     Sending code...
@@ -220,16 +264,19 @@ export const SignUpForm = () => {
             </div>
           </>
         ) : (
-          <form onSubmit={handleCodeSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="code" className="text-sm font-medium">
+          <form onSubmit={handleCodeSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="code"
+                className="text-xs font-medium text-zinc-700"
+              >
                 Verification code
               </Label>
               <Input
                 id="code"
                 type="text"
                 placeholder="123456"
-                className="focus-visible:ring-primary h-11 rounded-xl border-zinc-200 text-center text-lg tracking-widest"
+                className="focus-visible:ring-primary h-10 rounded-xl border-zinc-200 text-center text-base tracking-widest"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 required
@@ -238,10 +285,10 @@ export const SignUpForm = () => {
 
             <Button
               type="submit"
-              disabled={isLoading}
-              className="bg-primary h-11 w-full rounded-xl font-medium text-white transition-all hover:brightness-95"
+              disabled={isEmailLoading}
+              className="bg-primary h-10 w-full rounded-xl text-xs font-medium text-white transition-all hover:brightness-95"
             >
-              {isLoading ? 'Verifying...' : 'Verify & Continue'}
+              {isEmailLoading ? 'Verifying...' : 'Verify & Continue'}
             </Button>
 
             <button

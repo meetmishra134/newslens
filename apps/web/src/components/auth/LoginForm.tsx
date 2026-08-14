@@ -8,6 +8,7 @@ import { Label } from '#/components/ui/label'
 import { useNavigate, Link } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { Spinner } from '#/components/ui/spinner'
+import { checkUser } from '#/features/auth/api/checkUser'
 
 const MotionCard = motion.create(Card)
 
@@ -17,10 +18,9 @@ export const SignInForm = () => {
   const [isError, setIsError] = useState('')
   const [verifying, setVerifying] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
-
-  const { signIn, fetchStatus } = useSignIn()
+  const [isEmailLoading, setIsEmailLoading] = useState(false)
+  const { signIn } = useSignIn()
   const navigate = useNavigate()
-  const isLoading = fetchStatus === 'fetching'
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true)
@@ -48,23 +48,36 @@ export const SignInForm = () => {
       return
     }
 
-    const { error: createError } = await signIn.create({ identifier: email })
-
-    if (createError) {
-      if (createError.code === 'form_identifier_not_found') {
-        toast.error('Account not found. Please sign up first.')
+    setIsEmailLoading(true)
+    try {
+      const { exists } = await checkUser({ email })
+      if (!exists) {
+        toast.error('Account not found.')
+        setIsEmailLoading(false)
         return
       }
-      toast.error(createError.message)
-      return
-    }
+      const { error: createError } = await signIn.create({ identifier: email })
 
-    const { error: sendCodeError } = await signIn.emailCode.sendCode()
+      if (createError) {
+        if (createError.code === 'form_identifier_not_found') {
+          toast.error('Account not found. Please sign up first.')
+          return
+        }
+        toast.error(createError.message)
+        return
+      }
 
-    if (sendCodeError) {
-      toast.error(sendCodeError.message)
-    } else {
-      setVerifying(true)
+      const { error: sendCodeError } = await signIn.emailCode.sendCode()
+
+      if (sendCodeError) {
+        toast.error(sendCodeError.message)
+      } else {
+        setVerifying(true)
+      }
+    } catch {
+      toast.error('An unexpected error occurred.')
+    } finally {
+      setIsEmailLoading(false)
     }
   }
 
@@ -75,16 +88,23 @@ export const SignInForm = () => {
       return
     }
 
-    const { error } = await signIn.emailCode.verifyCode({ code })
+    setIsEmailLoading(true)
+    try {
+      const { error } = await signIn.emailCode.verifyCode({ code })
 
-    if (error) {
-      toast.error(error.message)
-      return
-    }
+      if (error) {
+        toast.error(error.message)
+        return
+      }
 
-    if (signIn.status === 'complete') {
-      await signIn.finalize()
-      navigate({ to: '/onboarding' })
+      if (signIn.status === 'complete') {
+        await signIn.finalize()
+        navigate({ to: '/onboarding' })
+      }
+    } catch {
+      toast.error('Verification failed.')
+    } finally {
+      setIsEmailLoading(false)
     }
   }
 
@@ -98,7 +118,7 @@ export const SignInForm = () => {
         ease: [0.16, 1, 0.3, 1],
       }}
     >
-      <CardHeader className="space-y-3 px-8 pt-8 text-center">
+      <CardHeader className="space-y-2 px-7 pt-6 pb-0 text-center">
         <div className="flex flex-col items-center">
           <motion.img
             src="/images/newslens.svg"
@@ -122,7 +142,7 @@ export const SignInForm = () => {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-5 px-8 pt-6 pb-8">
+      <CardContent className="space-y-4 px-7 pt-4 pb-6">
         {!verifying ? (
           <>
             <Button
@@ -196,10 +216,10 @@ export const SignInForm = () => {
 
               <Button
                 type="submit"
-                disabled={isLoading}
+                disabled={isEmailLoading}
                 className="bg-primary h-11 w-full rounded-xl font-medium text-white transition-all hover:brightness-95"
               >
-                {isLoading ? (
+                {isEmailLoading ? (
                   <>
                     <Spinner data-icon="inline-start" />
                     Sending code...
@@ -239,10 +259,10 @@ export const SignInForm = () => {
 
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isEmailLoading}
               className="bg-primary h-11 w-full rounded-xl font-medium text-white transition-all hover:brightness-95"
             >
-              {isLoading ? 'Verifying...' : 'Verify & Continue'}
+              {isEmailLoading ? 'Verifying...' : 'Verify & Continue'}
             </Button>
 
             <button

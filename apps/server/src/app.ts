@@ -8,14 +8,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import helmet from "helmet";
 import { errorHandler } from "./middleware/errorHandler.middleware";
-
 const app = express();
-app.use(express.json({ limit: "20kb" }));
-app.use(cookieParser());
-app.use(helmet());
-app.use(clerkMiddleware());
-app.use(express.urlencoded({ extended: true, limit: "20kb" }));
-app.use("/public", express.static(path.join(__dirname, "../public")));
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -31,6 +24,12 @@ app.use(
     ],
   }),
 );
+app.use(express.json({ limit: "20kb" }));
+app.use(cookieParser());
+app.use(helmet());
+app.use(clerkMiddleware());
+app.use(express.urlencoded({ extended: true, limit: "20kb" }));
+app.use("/public", express.static(path.join(__dirname, "../public")));
 
 app.use("/api/v1/healthCheck", healthCheckRouter);
 app.use("/api/v1/auth", authRouter);

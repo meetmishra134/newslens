@@ -6,8 +6,7 @@ export async function syncUserService(clerkId: string) {
   const email =
     clerkUser.emailAddresses.find((email) => email.id === clerkUser.primaryEmailAddressId)
       ?.emailAddress ?? "";
-  const name = `${clerkUser.firstName ?? ""} ${clerkUser.lastName ?? ""}`.trim();
-
+  const name = clerkUser.username;
   const user = await prisma.user.upsert({
     where: {
       clerkId,
@@ -25,4 +24,15 @@ export async function syncUserService(clerkId: string) {
     },
   });
   return user;
+}
+export async function checkUserExists(email: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return !!user;
 }

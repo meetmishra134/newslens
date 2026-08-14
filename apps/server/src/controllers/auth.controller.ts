@@ -1,4 +1,4 @@
-import { syncUserService } from "../services/auth.service";
+import { syncUserService, checkUserExists } from "../services/auth.service";
 import ApiError from "../utils/api.error";
 import ApiResponse from "../utils/api.response";
 import { asyncHandler } from "../utils/async-handler";
@@ -11,6 +11,15 @@ const syncUser = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(401, "Unauthorized");
   }
   const user = await syncUserService(userId);
-  res.status(200).json(new ApiResponse(200, "User synced successfully", user));
+  res.status(201).json(new ApiResponse(200, "User synced successfully", user));
 });
-export { syncUser };
+
+const checkUser = asyncHandler(async (req: Request, res: Response) => {
+  const { email } = req.body;
+  if (!email) {
+    throw new ApiError(400, "Email is required");
+  }
+  const exists = await checkUserExists(email);
+  res.status(200).json(new ApiResponse(200, "User existence checked successfully", { exists }));
+});
+export { checkUser, syncUser };
