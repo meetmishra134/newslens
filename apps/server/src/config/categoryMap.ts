@@ -1,0 +1,37 @@
+export const NEWSDATA_CATEGORY_MAP: Record<string, string> = {
+  technology: "technology",
+  business: "business",
+  sports: "sports",
+  science: "science",
+  health: "health",
+  politics: "politics",
+  entertainment: "entertainment",
+  world: "world",
+  top: "world",
+  national: "world",
+};
+export const CURRENTS_CATEGORY_MAP: Record<string, string> = {
+  science_technology: "technology",
+  technology: "technology",
+  economy_business_finance: "business",
+  business: "business",
+  sports: "sports",
+  science: "science",
+  health: "health",
+  politics: "politics",
+  entertainment: "entertainment",
+  world: "world",
+  regional: "world",
+  national: "world",
+  international: "world",
+};
+export const MVP_CATEGORIES = [
+  "technology",
+  "business",
+  "sports",
+  // "science",
+  // "health",
+  // "politics",
+  // "entertainment",
+  // "world",
+];

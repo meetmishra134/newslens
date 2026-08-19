@@ -3,6 +3,7 @@ import cors from "cors";
 import healthCheckRouter from "./routes/healthCheck.route";
 import userRouter from "./routes/user.routes";
 import authRouter from "./routes/auth.route";
+import newsRouter from "./routes/news.route";
 import { clerkMiddleware } from "@clerk/express";
 import cookieParser from "cookie-parser";
 import path from "path";
@@ -34,6 +35,7 @@ app.use("/public", express.static(path.join(__dirname, "../public")));
 app.use("/api/v1/healthCheck", healthCheckRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/news", newsRouter);
 app.use(errorHandler);
 
 export default app;
