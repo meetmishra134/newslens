@@ -87,11 +87,11 @@ NewsLens is an AI-powered news aggregation platform that collects articles from 
 
 - `GET /api/v1/news/explore` - Articles from categories the user has NOT selected. Drives the Explore page.
 
-- `GET /api/v1/news` - Browse all news with manual filters. Used when user wants to override their preferences temporarily.
+- `GET /api/v1/news/` - Browse all news with manual filters. Used when user wants to override their preferences temporarily.
 
 - `GET /api/v1/news/trending` - Top articles sorted by read_count in the last 24 hours. Same for every user. Cached 30 min.
 
-- `GET /api/v1/news/articleId` - Single article by ID. Used on the article detail page. Cached per article for 1 hour.
+- `GET /api/v1/news/:articleId` - Single article by ID. Used on the article detail page. Cached per article for 1 hour.
 
 - `POST /api/v1/news/articleId/read` - Mark article as read. Increments read_count, saves to read_history, updates streak. Called automatically when article page loads.
 

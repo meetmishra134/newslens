@@ -37,7 +37,7 @@ const saveArticles = async (articles: NormalizedArticle[], sourceId: string) => 
           title: article.title,
           description: article.description,
           thumbnail: article.thumbnail,
-          author: article.author,
+          author: article.author?.trim(),
           category: article.category,
           country: article.country,
           language: article.language,
